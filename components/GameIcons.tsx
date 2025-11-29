@@ -1,4 +1,3 @@
-
 import React from 'react';
 
 interface IconProps {
@@ -147,22 +146,6 @@ export const IconLoot: React.FC<IconProps> = (props) => (
     <path d="M12 2L20 6V16L12 20L4 16V6L12 2Z" stroke="currentColor" strokeWidth="2" fill="currentColor" fillOpacity="0.1" />
     <path d="M4 6L12 10L20 6" stroke="currentColor" strokeWidth="2" />
     <path d="M12 20V10" stroke="currentColor" strokeWidth="2" />
-  </DuotoneIcon>
-);
-
-export const IconSlither: React.FC<IconProps> = (props) => (
-  <DuotoneIcon {...props}>
-    <path d="M4 16C4 16 5 13 8 13C11 13 11 16 14 16C17 16 17 13 20 13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-    <circle cx="20" cy="13" r="2" fill="currentColor" />
-    <circle cx="4" cy="16" r="1" fill="currentColor" fillOpacity="0.5" />
-  </DuotoneIcon>
-);
-
-export const IconPaper: React.FC<IconProps> = (props) => (
-  <DuotoneIcon {...props}>
-    <rect x="4" y="4" width="16" height="16" rx="2" stroke="currentColor" strokeWidth="2" fill="currentColor" fillOpacity="0.1" />
-    <path d="M8 8H16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-    <path d="M8 12H12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
   </DuotoneIcon>
 );
 

@@ -311,7 +311,7 @@ const Crash: React.FC<CrashProps> = ({ onBet, onWin, onLoss }) => {
       // Label
       if (t > 0) {
         ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
-        ctx.font = '10px Inter';
+        ctx.font = '10px Roboto';
         ctx.textAlign = 'center';
         ctx.fillText(`${t}s`, x, h - padB + 15);
       }
@@ -331,7 +331,7 @@ const Crash: React.FC<CrashProps> = ({ onBet, onWin, onLoss }) => {
       // Label
       if (m > 1) {
         ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
-        ctx.font = '10px Inter';
+        ctx.font = '10px Roboto';
         ctx.textAlign = 'right';
         ctx.textBaseline = 'middle';
         ctx.fillText(`${m}x`, padL - 10, y);
@@ -354,8 +354,6 @@ const Crash: React.FC<CrashProps> = ({ onBet, onWin, onLoss }) => {
       if (sx < 0) sx += starW;
       if (sy > starH) sy -= starH;
 
-      // Map virtual coordinates to screen if possible, or just use modulo relative to screen W/H for simple effect
-      // To make it look continuous, we map the large virtual starfield to the current viewport window
       const renderX = sx % w;
       const renderY = sy % h;
 
@@ -385,20 +383,20 @@ const Crash: React.FC<CrashProps> = ({ onBet, onWin, onLoss }) => {
 
       const grad = ctx.createLinearGradient(padL, h-padB, w, 0);
       if (phaseRef.current === 'CRASHED') {
-        grad.addColorStop(0, '#ef4444');
-        grad.addColorStop(1, '#b91c1c');
-        ctx.shadowColor = '#ef4444';
+        grad.addColorStop(0, '#CE2029'); // Brand Red
+        grad.addColorStop(1, '#991b1b');
+        ctx.shadowColor = '#CE2029';
       } else {
-        grad.addColorStop(0, '#10b981'); 
-        grad.addColorStop(0.5, '#3b82f6'); 
-        grad.addColorStop(1, '#8b5cf6'); 
-        ctx.shadowColor = '#8b5cf6';
+        // Brand Cyan to Blue for Tech feel
+        grad.addColorStop(0, '#00FFFF'); 
+        grad.addColorStop(1, '#3b82f6'); 
+        ctx.shadowColor = '#00FFFF';
       }
       
       ctx.lineCap = 'round';
       ctx.lineWidth = 4;
       ctx.strokeStyle = grad;
-      ctx.shadowBlur = 10;
+      ctx.shadowBlur = 15;
       ctx.stroke();
       ctx.shadowBlur = 0;
 
@@ -406,8 +404,8 @@ const Crash: React.FC<CrashProps> = ({ onBet, onWin, onLoss }) => {
       ctx.lineTo(mapX(elapsed), h - padB);
       ctx.lineTo(mapX(0), h - padB);
       ctx.fillStyle = phaseRef.current === 'CRASHED' 
-        ? 'rgba(239, 68, 68, 0.1)' 
-        : 'rgba(139, 92, 246, 0.1)';
+        ? 'rgba(206, 32, 41, 0.1)' 
+        : 'rgba(0, 255, 255, 0.1)';
       ctx.fill();
     }
 
@@ -499,7 +497,7 @@ const Crash: React.FC<CrashProps> = ({ onBet, onWin, onLoss }) => {
       ctx.translate(rocketX, rocketY);
       ctx.rotate(rocketAngle);
       
-      ctx.shadowColor = '#3b82f6';
+      ctx.shadowColor = '#00FFFF';
       ctx.shadowBlur = 15;
       
       ctx.fillStyle = '#ffffff';
@@ -512,7 +510,8 @@ const Crash: React.FC<CrashProps> = ({ onBet, onWin, onLoss }) => {
       ctx.ellipse(5, -3, 8, 3, 0, 0, Math.PI * 2);
       ctx.fill();
 
-      ctx.fillStyle = '#ec4899';
+      // Fins - Brand Pink/Purple -> Changed to Red/Orange accent
+      ctx.fillStyle = '#CE2029';
       ctx.beginPath();
       ctx.moveTo(-15, 0);
       ctx.lineTo(-25, -15);
@@ -526,7 +525,7 @@ const Crash: React.FC<CrashProps> = ({ onBet, onWin, onLoss }) => {
       ctx.fill();
 
       ctx.globalCompositeOperation = 'lighter';
-      ctx.fillStyle = '#f59e0b';
+      ctx.fillStyle = '#FFA500';
       ctx.beginPath();
       ctx.arc(-22, 0, 6 + Math.random() * 2, 0, Math.PI * 2);
       ctx.fill();
@@ -560,15 +559,15 @@ const Crash: React.FC<CrashProps> = ({ onBet, onWin, onLoss }) => {
        {/* History Bar */}
        <div className="flex items-center gap-2 overflow-hidden bg-card/30 backdrop-blur-md p-2 rounded-lg border border-white/5">
           <div className="flex items-center gap-2 px-3 text-slate-400 border-r border-white/10 shrink-0">
-             <History size={16} /> <span className="text-xs font-bold uppercase hidden md:inline">History</span>
+             <History size={16} /> <span className="text-xs font-bold uppercase hidden md:inline font-heading tracking-wider">History</span>
           </div>
           <div className="flex gap-2 overflow-x-auto no-scrollbar mask-linear-fade">
              {history.map((val, i) => (
                <div 
                  key={i} 
-                 className={`px-3 py-1 rounded text-xs font-mono font-bold border min-w-[60px] text-center
-                   ${val >= 10 ? 'text-yellow-400 border-yellow-500/30 bg-yellow-500/10' :
-                     val >= 2 ? 'text-emerald-400 border-emerald-500/30 bg-emerald-500/10' :
+                 className={`px-3 py-1 rounded text-xs font-sub border min-w-[60px] text-center
+                   ${val >= 10 ? 'text-brand-yellow border-brand-yellow/30 bg-brand-yellow/10' :
+                     val >= 2 ? 'text-brand-cyan border-brand-cyan/30 bg-brand-cyan/10' :
                      'text-slate-400 border-slate-700 bg-slate-800/50'}
                  `}
                >
@@ -584,8 +583,8 @@ const Crash: React.FC<CrashProps> = ({ onBet, onWin, onLoss }) => {
           <div className="w-full lg:w-80 flex flex-col gap-4 bg-card p-6 rounded-2xl border border-slate-800 shadow-xl shrink-0 z-20 h-fit">
              <div className="flex items-center justify-between text-white mb-4">
                 <div className="flex items-center gap-2">
-                  <Rocket size={24} className="text-accent" />
-                  <span className="text-xl font-bold uppercase tracking-wider">Crash</span>
+                  <Rocket size={24} className="text-brand-orange" />
+                  <span className="text-2xl font-heading uppercase tracking-wider">Crash</span>
                 </div>
                 <button onClick={() => setShowInfo(true)} className="text-gray-500 hover:text-white transition-colors">
                   <HelpCircle size={20} />
@@ -596,7 +595,7 @@ const Crash: React.FC<CrashProps> = ({ onBet, onWin, onLoss }) => {
              <div className="space-y-1">
                 <div className="flex justify-between text-xs font-bold text-gray-400 uppercase">
                    <span>Bet Amount</span>
-                   <span>${(parseFloat(betAmount)||0).toFixed(2)}</span>
+                   <span className="font-sub">${(parseFloat(betAmount)||0).toFixed(2)}</span>
                 </div>
                 <div className="relative group">
                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 font-bold">$</span>
@@ -605,7 +604,7 @@ const Crash: React.FC<CrashProps> = ({ onBet, onWin, onLoss }) => {
                      value={betAmount}
                      onChange={(e) => setBetAmount(e.target.value)}
                      disabled={phase !== 'IDLE' && phase !== 'CRASHED'}
-                     className="w-full bg-slate-900 border border-slate-700 rounded-xl py-4 pl-8 pr-4 text-white font-mono font-bold text-lg focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all"
+                     className="w-full bg-slate-900 border border-slate-700 rounded-xl py-4 pl-8 pr-4 text-white font-sub text-lg focus:border-brand-orange focus:ring-1 focus:ring-brand-orange outline-none transition-all"
                    />
                 </div>
                 <div className="grid grid-cols-2 gap-2 mt-2">
@@ -623,7 +622,7 @@ const Crash: React.FC<CrashProps> = ({ onBet, onWin, onLoss }) => {
                       value={autoCashout}
                       onChange={(e) => setAutoCashout(e.target.value)}
                       disabled={phase !== 'IDLE' && phase !== 'CRASHED'}
-                      className="w-full bg-slate-900 border border-slate-700 rounded-xl py-3 px-4 text-white font-mono font-bold focus:border-accent outline-none transition-all"
+                      className="w-full bg-slate-900 border border-slate-700 rounded-xl py-3 px-4 text-white font-sub text-lg focus:border-brand-orange outline-none transition-all"
                    />
                    <span className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 text-xs font-bold">X</span>
                 </div>
@@ -633,14 +632,14 @@ const Crash: React.FC<CrashProps> = ({ onBet, onWin, onLoss }) => {
                {phase === 'IDLE' || phase === 'CRASHED' ? (
                  <button 
                    onClick={startGame}
-                   className="w-full bg-accent hover:bg-accent-hover text-background font-black text-xl py-5 rounded-xl shadow-[0_0_30px_rgba(0,231,1,0.3)] hover:shadow-[0_0_40px_rgba(0,231,1,0.5)] transition-all active:scale-95 flex items-center justify-center gap-2"
+                   className="w-full bg-gradient-to-r from-brand-red to-brand-orange hover:brightness-110 text-white font-heading tracking-wider text-2xl py-5 rounded-xl shadow-[0_0_30px_rgba(206,32,41,0.3)] transition-all active:scale-95 flex items-center justify-center gap-2"
                  >
                    PLACE BET
                  </button>
                ) : phase === 'COUNTDOWN' ? (
                  <button 
                    disabled
-                   className="w-full bg-slate-700 text-gray-400 font-bold text-lg py-5 rounded-xl cursor-not-allowed border-2 border-slate-600 border-dashed"
+                   className="w-full bg-slate-700 text-gray-400 font-bold text-lg py-5 rounded-xl cursor-not-allowed border-2 border-slate-600 border-dashed font-heading"
                  >
                    Prepare...
                  </button>
@@ -648,15 +647,15 @@ const Crash: React.FC<CrashProps> = ({ onBet, onWin, onLoss }) => {
                  <button 
                    onClick={cashOut}
                    disabled={hasCashedOut}
-                   className={`w-full font-black text-2xl py-5 rounded-xl shadow-lg transition-all active:scale-95 flex flex-col items-center leading-none gap-1
+                   className={`w-full font-heading text-3xl py-5 rounded-xl shadow-lg transition-all active:scale-95 flex flex-col items-center leading-none gap-1
                      ${hasCashedOut 
                        ? 'bg-slate-800 text-gray-500 cursor-not-allowed border border-slate-700' 
-                       : 'bg-emerald-500 hover:bg-emerald-400 text-white shadow-[0_0_30px_rgba(16,185,129,0.4)]'}
+                       : 'bg-brand-yellow hover:bg-yellow-300 text-black shadow-[0_0_30px_rgba(255,255,51,0.4)]'}
                    `}
                  >
                    <span>{hasCashedOut ? "CASHED" : "CASH OUT"}</span>
                    {!hasCashedOut && (
-                     <span className="text-sm font-mono opacity-90 tracking-wide font-medium">
+                     <span className="text-sm font-sub opacity-80 tracking-wide">
                        @ {multiplier.toFixed(2)}x
                      </span>
                    )}
@@ -673,32 +672,32 @@ const Crash: React.FC<CrashProps> = ({ onBet, onWin, onLoss }) => {
              <div className="absolute inset-0 pointer-events-none flex flex-col items-center justify-center z-10">
                 
                 {phase === 'COUNTDOWN' && (
-                  <div className="text-8xl font-black text-white animate-ping-slow drop-shadow-[0_0_20px_rgba(255,255,255,0.5)]">
+                  <div className="text-8xl font-sub text-white animate-ping-slow drop-shadow-[0_0_20px_rgba(255,255,255,0.5)]">
                     {countdown}
                   </div>
                 )}
 
                 {(phase === 'FLYING' || phase === 'CRASHED') && (
                    <div className="flex flex-col items-center">
-                      <div className={`text-7xl md:text-9xl font-black font-mono tracking-tighter transition-colors duration-100 drop-shadow-2xl
-                        ${phase === 'CRASHED' ? 'text-red-500' : multiplier > 10 ? 'text-yellow-400' : 'text-white'}
+                      <div className={`text-8xl md:text-9xl font-sub tracking-tight transition-colors duration-100 drop-shadow-2xl
+                        ${phase === 'CRASHED' ? 'text-brand-red' : multiplier > 10 ? 'text-brand-yellow' : 'text-white'}
                       `}>
                         {multiplier.toFixed(2)}x
                       </div>
                       
                       {phase === 'CRASHED' && (
-                        <div className="mt-4 bg-red-500/20 backdrop-blur border border-red-500 px-6 py-2 rounded-full flex items-center gap-2 animate-bounce">
-                           <AlertTriangle className="text-red-500" />
-                           <span className="text-red-500 font-bold uppercase tracking-widest">Crashed</span>
+                        <div className="mt-4 bg-brand-red/20 backdrop-blur border border-brand-red px-6 py-2 rounded-full flex items-center gap-2 animate-bounce">
+                           <AlertTriangle className="text-brand-red" />
+                           <span className="text-brand-red font-heading uppercase tracking-widest text-xl">Crashed</span>
                         </div>
                       )}
 
                       {hasCashedOut && phase !== 'CRASHED' && (
-                        <div className="mt-4 bg-emerald-500/20 backdrop-blur border border-emerald-500 px-8 py-3 rounded-xl flex flex-col items-center animate-in zoom-in slide-in-from-bottom-4">
-                           <span className="text-emerald-400 font-bold uppercase text-xs tracking-widest mb-1">You Won</span>
+                        <div className="mt-4 bg-brand-yellow/20 backdrop-blur border border-brand-yellow px-8 py-3 rounded-xl flex flex-col items-center animate-in zoom-in slide-in-from-bottom-4">
+                           <span className="text-brand-yellow font-heading uppercase text-sm tracking-widest mb-1">You Won</span>
                            <div className="flex items-center gap-2">
-                              <Trophy size={20} className="text-emerald-400" />
-                              <span className="text-white font-mono font-bold text-2xl">${payout.toFixed(2)}</span>
+                              <Trophy size={20} className="text-brand-yellow" />
+                              <span className="text-white font-sub text-3xl">${payout.toFixed(2)}</span>
                            </div>
                         </div>
                       )}
@@ -710,7 +709,7 @@ const Crash: React.FC<CrashProps> = ({ onBet, onWin, onLoss }) => {
                      <div className="inline-flex p-4 rounded-full bg-slate-800/50 border border-white/10 mb-4">
                        <Rocket size={48} className="text-slate-500" />
                      </div>
-                     <h3 className="text-2xl font-bold text-white tracking-widest uppercase">Ready to Launch</h3>
+                     <h3 className="text-3xl font-heading text-white tracking-widest uppercase">Ready to Launch</h3>
                   </div>
                 )}
 
@@ -718,7 +717,7 @@ const Crash: React.FC<CrashProps> = ({ onBet, onWin, onLoss }) => {
 
              {/* Network Stats (Fake) */}
              <div className="absolute top-4 right-4 flex items-center gap-2 bg-black/30 backdrop-blur px-3 py-1.5 rounded-full border border-white/5 text-[10px] font-mono text-slate-500">
-                <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                <div className="w-1.5 h-1.5 rounded-full bg-brand-cyan animate-pulse" />
                 <span>LIVE</span>
                 <span className="border-l border-white/10 pl-2 ml-1">24ms</span>
              </div>
